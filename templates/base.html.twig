@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Google Drive!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="css/base.css" />
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+
+            <div class="container">
+                    {% if not isLogged %}
+{#login block #}
+                    <div class="login-box">
+                        <h2>Social Login Button</h2>
+                        <a href="{{ path('vatri_google_drive_auth') }}" class="social-button" id="google-connect"> <span>Connect with Google Drive</span></a>
+                    </div>
+{#END login Block #}
+                    {% else %}
+{# File Folder list block #}
+                        {% if not res is empty %}
+                            {% for entity in res %}
+                                {% if entity.fullFileExtension == null%}
+                                    <a href="{{ path('google_drive', { folderId: entity.id }) }}" > <div class="folder"></div> </a>
+                                    <div class="title">{{ entity.name }}</div>
+                                {% else %}
+                                    <div class="file"></div>
+                                    <div class="title">{{ entity.name }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+{# END File Folder list block #}
+                    {% endif %}
+            </div>
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
